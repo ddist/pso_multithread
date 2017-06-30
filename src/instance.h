@@ -4,15 +4,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "util.h"
+#include "shared.h"
 
 typedef struct {
 	unsigned int n,m,N, MZ, MW, M;
 	unsigned int **s;
 	unsigned int *w,*p,*e,*l,*a,*b;
 	double **c;
-} Instance;
+} ftsp_instance;
 
-void initialize_instance(const char*, Instance*);
+void initialize_instance(const char*, ftsp_instance*);
 
 #endif

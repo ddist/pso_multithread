@@ -1,6 +1,6 @@
 #include "instance.h"
 
-void initialize_instance(const char* file, Instance* inst) {
+void initialize_instance(const char* file, ftsp_instance* inst) {
 	FILE* fp;
 	char* line = NULL;
 	size_t len = 0;

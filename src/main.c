@@ -2,8 +2,8 @@
 
 int main(int argc, char const *argv[])
 {
-	PSOParams params;
-	Instance inst;
+	pso_params params;
+	ftsp_instance inst;
 
 	int inst_type = 0;
 
