@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
 		params.u_max = params.u_max/2.0;
 		params.u_min = -params.u_max;
 	}
-
+	
 	//TODO Initialize PSO and execute
 
 	return EXIT_SUCCESS;
