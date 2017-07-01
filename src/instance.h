@@ -12,7 +12,8 @@ typedef struct {
 	unsigned int *w,*p,*e,*l,*a,*b;
 	double **c;
 } ftsp_instance;
+typedef ftsp_instance* ftsp_instance_t;
 
-void initialize_instance(const char*, ftsp_instance*);
+void initialize_instance(const char*, ftsp_instance_t);
 
 #endif

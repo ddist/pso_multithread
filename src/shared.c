@@ -57,7 +57,6 @@ void create_particle(unsigned int s, pso_particle_t* p) {
 
 void initialize_particle(double u_max, double u_min, double v_max, double v_min, pso_particle_t p) {
 	p->best_score = 0.0;
-	
 	for(size_t i=0; i < p->size;i++) {
 		p->u[i] = rand_uniform(u_min, u_max);
 		p->v[i] = rand_uniform(v_min, v_max);

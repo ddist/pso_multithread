@@ -33,6 +33,11 @@ int main(int argc, char const *argv[])
 		params.u_max = params.u_max/2.0;
 		params.u_min = -params.u_max;
 	}
+
+	pso_t pso;
+	create_pso(&inst, &params, &pso);
+	initialize_pso(pso);
+
 	
 	//TODO Initialize PSO and execute
 
