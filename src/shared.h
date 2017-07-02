@@ -5,22 +5,32 @@
 #include <stdlib.h>
 #include <math.h>
 
+/******************************* Misc ***************************************/
+
+typedef int bool;
+#define true 1
+#define false 0
+
 #define NO_FILE "The instance file can't be opened"
 #define MISFORMATTED "The instance file doesn't have the right format"
 #define MEMALLOC_ERROR "Memory allocation did not succeded"
 
 void throw_error(int, const char*);
 
-double norm1(double, double, double, double);
+double norm(double, double, double, double);
 
 double rand_uniform(double, double);
 
+double max(double, double);
+
+double min(double, double);
+/******************************* Params *************************************/
 typedef struct {
 	float cp, cg, cl, cn, uq, u_max, u_min, v_max, v_min, w_max, w_min;
 	unsigned int I, seed, max_iter;
 } pso_params;
 typedef pso_params* pso_params_t;
-
+/******************************* Route **************************************/
 #define ROUTE_MIN_CAPACITY 10
 
 typedef struct {
@@ -33,20 +43,30 @@ size_t create_route(pso_route_t*);
 
 size_t add_to_route(unsigned int, pso_route_t);
 
+unsigned int at(int, pso_route_t);
+
 void destroy_route(pso_route_t);
 
+/******************************* Particle ************************************/
 typedef struct {
 	double *u, *v;
 	double *best_u;
 	double best_score;
-	size_t size;
+	size_t id, size;
 } pso_particle;
 typedef pso_particle* pso_particle_t;
 
 void create_particle(unsigned int, pso_particle_t*);
 
-void initialize_particle(double, double, double, double, pso_particle_t);
+void initialize_particle(int, double, double, double, double, pso_particle_t);
 
 void destroy_particle(pso_particle_t);
+
+/******************************** PSO *****************************************/
+void compute_distances(unsigned int, double**, double**);
+
+void compute_coverage(unsigned int, unsigned int, double*, unsigned int**, 
+	unsigned int*, double**, unsigned int**);
+
 
 #endif

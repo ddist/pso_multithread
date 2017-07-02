@@ -1,7 +1,11 @@
 #include "pso.h"
+#include <time.h>
 
 int main(int argc, char const *argv[])
 {
+	printf("-> Initializing...");
+
+	clock_t start_t, end_t;
 	pso_params params;
 	ftsp_instance inst;
 
@@ -38,8 +42,17 @@ int main(int argc, char const *argv[])
 	create_pso(&inst, &params, &pso);
 	initialize_pso(pso);
 
-	
-	//TODO Initialize PSO and execute
+	printf("done.\n-> Optimizing...");
+	fflush(stdout);
 
+	start_t = clock();
+	double score = start(pso);
+	end_t = clock();
+
+	double runtime = (double)(end_t-start_t)/CLOCKS_PER_SEC;
+
+	printf("done.\n-> Best Score  = %lf\n-> Runtime = %lf\n", score, runtime);
+
+	destroy_pso(pso);
 	return EXIT_SUCCESS;
 }
