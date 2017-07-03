@@ -1,10 +1,8 @@
 #include <time.h>
 
 #ifdef MULTITHREADING
-	#define MT 1
 	#include "pso_mt.h"
 #else
-	#define MT 0
 	#include "pso.h"
 #endif
 
@@ -55,7 +53,6 @@ int main(int argc, char const *argv[])
 	fflush(stdout);
 
 	start_t = clock();
-	if
 	double score = start(pso);
 	end_t = clock();
 

@@ -33,4 +33,6 @@
 
 pso
 pso_mt
+example
 *.o
+example.c

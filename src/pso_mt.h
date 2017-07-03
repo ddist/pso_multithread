@@ -3,6 +3,7 @@
 
 #include "shared.h"
 #include "instance.h"
+#include "thread_pool.h"
 
 #define MAX_URGENCY 1000.0
 #define MIN_FDR -9999999.9
