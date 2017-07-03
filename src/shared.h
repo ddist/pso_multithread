@@ -27,7 +27,8 @@ double min(double, double);
 /******************************* Params *************************************/
 typedef struct {
 	float cp, cg, cl, cn, uq, u_max, u_min, v_max, v_min, w_max, w_min;
-	unsigned int I, seed, max_iter;
+	unsigned int I, seed, max_iter, thread_count;
+	bool multithreaded;
 } pso_params;
 typedef pso_params* pso_params_t;
 /******************************* Route **************************************/

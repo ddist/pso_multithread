@@ -1,5 +1,12 @@
-#include "pso.h"
 #include <time.h>
+
+#ifdef MULTITHREADING
+	#define MT 1
+	#include "pso_mt.h"
+#else
+	#define MT 0
+	#include "pso.h"
+#endif
 
 int main(int argc, char const *argv[])
 {
@@ -9,6 +16,7 @@ int main(int argc, char const *argv[])
 	pso_params params;
 	ftsp_instance inst;
 
+	params.multithreaded = false;
 	int inst_type = 0;
 
 	for(int i=1; i < argc; i++) {
@@ -27,6 +35,7 @@ int main(int argc, char const *argv[])
 		if(strcmp(argv[i], "-nParticles") == 0) {params.I = atoi(argv[i+1]); i++; continue;};
 		if(strcmp(argv[i], "-maxIter") == 0) {params.max_iter = atoi(argv[i+1]); i++; continue;};
 		if(strcmp(argv[i], "-inst") == 0) {initialize_instance(argv[i+1], &inst); i++; continue;};
+		if(strcmp(argv[i], "-jobs") == 0) {params.multithreaded = true; params.thread_count = atoi(argv[i+1]); i++; continue;};
 		if(strcmp(argv[i], "-type") == 0) {
 			if(strcmp(argv[i+1], "RAD") == 0) {inst_type = 1;}; 
 			i++; continue;
@@ -46,6 +55,7 @@ int main(int argc, char const *argv[])
 	fflush(stdout);
 
 	start_t = clock();
+	if
 	double score = start(pso);
 	end_t = clock();
 

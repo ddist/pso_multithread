@@ -17,7 +17,7 @@ pso: $(OBJS)
 	$(CC) -o pso $^ -lm
 
 pso_mt: $(OBJS_MT)
-	$(CC) -o pso_mt $^ -lm
+	$(CC) -o pso_mt $^ -lm -DMULTITHREADING
 
 all: pso
 

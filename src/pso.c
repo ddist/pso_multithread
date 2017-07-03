@@ -212,10 +212,11 @@ double start(pso_t pso) {
 			if(pso->swarm[j]->best_score < score) {
 				pso->swarm[j]->best_score = score;
 				memcpy(pso->swarm[j]->best_u, pso->swarm[j]->u, pso->swarm[j]->size * sizeof(double));
-			}
-			if(pso->best_score < score) {
-				pso->best_score = score;
-				memcpy(pso->best_u, pso->swarm[j]->u, pso->swarm[j]->size * sizeof(double));
+
+				if(pso->best_score < score) {
+					pso->best_score = score;
+					memcpy(pso->best_u, pso->swarm[j]->u, pso->swarm[j]->size * sizeof(double));
+				}
 			}
 
 			update_particle_velocity(pso->swarm[j], i, pso);

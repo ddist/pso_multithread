@@ -1,0 +1,262 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 63.32      4.10     4.10    70000     0.00     0.00  decode
+ 15.46      5.10     1.00    35001     0.00     0.00  initialize_instance
+  7.89      5.61     0.51  1225000     0.00     0.00  evaluate_routes
+  3.09      5.81     0.20 54616575     0.00     0.00  add_to_route
+  2.24      5.95     0.15 18647452     0.00     0.00  initialize_particle
+  2.16      6.09     0.14                             compute_distance
+  1.70      6.20     0.11        1     0.11     2.86  start
+  1.39      6.29     0.09    35000     0.00     0.00  update_particle_velocity
+  0.93      6.35     0.06 43367542     0.00     0.00  destroy_route
+  0.77      6.40     0.05 47334765     0.00     0.00  at
+  0.46      6.43     0.03 43367543     0.00     0.00  compute_urgency
+  0.31      6.45     0.02  4191851     0.00     0.00  create_particle
+  0.15      6.46     0.01                             update_particle_position
+  0.08      6.47     0.01       35     0.00     0.00  destroy_particle
+  0.00      6.47     0.00       36     0.00     0.00  compute_coverage
+  0.00      6.47     0.00       35     0.00     0.00  compute_distances
+  0.00      6.47     0.00        1     0.00     0.00  max
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2015 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.15% of 6.47 seconds
+
+index % time    self  children    called     name
+                2.05    0.68   35000/70000       start [4]
+                2.05    0.68   35000/70000       throw_error [2]
+[1]     84.3    4.10    1.36   70000         decode [1]
+                1.00    0.16   35000/35001       initialize_instance [5]
+                0.10    0.00 12705601/18647452     initialize_particle [9]
+                0.05    0.00 47334765/47334765     at [12]
+                0.03    0.00 43367542/43367543     compute_urgency [13]
+                0.02    0.00 3316851/4191851     create_particle [14]
+-----------------------------------------------
+                                                 <spontaneous>
+[2]     53.2    0.00    3.44                 throw_error [2]
+                2.05    0.68   35000/70000       decode [1]
+                0.09    0.62   35000/35000       update_particle_velocity [6]
+-----------------------------------------------
+                                   1             create_pso [3]
+[3]     44.2    0.00    2.86       0+1       create_pso [3]
+                0.11    2.75       1/1           start [4]
+                0.00    0.00       1/43367543     compute_urgency [13]
+                0.00    0.00       1/1           max [22]
+                                   1             create_pso [3]
+-----------------------------------------------
+                0.11    2.75       1/1           create_pso [3]
+[4]     44.2    0.11    2.75       1         start [4]
+                2.05    0.68   35000/70000       decode [1]
+                0.01    0.00   35000/1225000     evaluate_routes [7]
+                0.00    0.00  875000/4191851     create_particle [14]
+-----------------------------------------------
+                0.00    0.00       1/35001       main [19]
+                1.00    0.16   35000/35001       decode [1]
+[5]     18.0    1.00    0.16   35001         initialize_instance [5]
+                0.16    0.00 44111325/54616575     add_to_route [8]
+-----------------------------------------------
+                0.09    0.62   35000/35000       throw_error [2]
+[6]     11.0    0.09    0.62   35000         update_particle_velocity [6]
+                0.50    0.06 1190000/1225000     evaluate_routes [7]
+                0.04    0.00 5066851/18647452     initialize_particle [9]
+                0.03    0.00 7875000/54616575     add_to_route [8]
+-----------------------------------------------
+                0.01    0.00   35000/1225000     start [4]
+                0.50    0.06 1190000/1225000     update_particle_velocity [6]
+[7]      8.8    0.51    0.06 1225000         evaluate_routes [7]
+                0.06    0.00 43367542/43367542     destroy_route [11]
+-----------------------------------------------
+                0.00    0.00    5250/54616575     compute_distances [20]
+                0.01    0.00 2625000/54616575     update_particle_position [15]
+                0.03    0.00 7875000/54616575     update_particle_velocity [6]
+                0.16    0.00 44111325/54616575     initialize_instance [5]
+[8]      3.1    0.20    0.00 54616575         add_to_route [8]
+-----------------------------------------------
+                0.01    0.00  875000/18647452     norm [16]
+                0.04    0.00 5066851/18647452     update_particle_velocity [6]
+                0.10    0.00 12705601/18647452     decode [1]
+[9]      2.2    0.15    0.00 18647452         initialize_particle [9]
+-----------------------------------------------
+                                                 <spontaneous>
+[10]     2.2    0.14    0.00                 compute_distance [10]
+-----------------------------------------------
+                0.06    0.00 43367542/43367542     evaluate_routes [7]
+[11]     0.9    0.06    0.00 43367542         destroy_route [11]
+-----------------------------------------------
+                0.05    0.00 47334765/47334765     decode [1]
+[12]     0.8    0.05    0.00 47334765         at [12]
+-----------------------------------------------
+                0.00    0.00       1/43367543     create_pso [3]
+                0.03    0.00 43367542/43367543     decode [1]
+[13]     0.5    0.03    0.00 43367543         compute_urgency [13]
+                0.00    0.00      35/35          compute_distances [20]
+                0.00    0.00       1/36          compute_coverage [21]
+-----------------------------------------------
+                0.00    0.00  875000/4191851     start [4]
+                0.02    0.00 3316851/4191851     decode [1]
+[14]     0.3    0.02    0.00 4191851         create_particle [14]
+-----------------------------------------------
+                                                 <spontaneous>
+[15]     0.3    0.01    0.01                 update_particle_position [15]
+                0.01    0.00 2625000/54616575     add_to_route [8]
+-----------------------------------------------
+                                                 <spontaneous>
+[16]     0.1    0.00    0.01                 norm [16]
+                0.01    0.00  875000/18647452     initialize_particle [9]
+-----------------------------------------------
+                0.01    0.00      35/35          initialize_pso [18]
+[17]     0.1    0.01    0.00      35         destroy_particle [17]
+-----------------------------------------------
+                                                 <spontaneous>
+[18]     0.1    0.00    0.01                 initialize_pso [18]
+                0.01    0.00      35/35          destroy_particle [17]
+-----------------------------------------------
+                                                 <spontaneous>
+[19]     0.0    0.00    0.00                 main [19]
+                0.00    0.00       1/35001       initialize_instance [5]
+-----------------------------------------------
+                0.00    0.00      35/35          compute_urgency [13]
+[20]     0.0    0.00    0.00      35         compute_distances [20]
+                0.00    0.00    5250/54616575     add_to_route [8]
+-----------------------------------------------
+                0.00    0.00       1/36          compute_urgency [13]
+                0.00    0.00      35/36          min [28]
+[21]     0.0    0.00    0.00      36         compute_coverage [21]
+-----------------------------------------------
+                0.00    0.00       1/1           create_pso [3]
+[22]     0.0    0.00    0.00       1         max [22]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2015 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+   [8] add_to_route           [14] create_particle         [9] initialize_particle
+  [12] at                      [1] decode                 [22] max
+  [21] compute_coverage       [17] destroy_particle        [4] start
+  [10] compute_distance       [11] destroy_route          [15] update_particle_position
+  [20] compute_distances       [7] evaluate_routes         [6] update_particle_velocity
+  [13] compute_urgency         [5] initialize_instance
