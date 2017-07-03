@@ -17,7 +17,7 @@ pso: $(OBJS)
 	$(CC) -o pso $^ -lm
 
 pso_mt: $(OBJS_MT)
-	$(CC) -o pso_mt $^ -lm -pthread -DMULTITHREADING
+	$(CC) -o pso_mt $^ -g -lm -pthread -DMULTITHREADING
 
 example: example.o thread_pool.o
 	$(CC) -o example $^ -g -lm -pthread
@@ -29,4 +29,5 @@ all: pso
 clean:
 	rm -f $(ODIR)/pso
 	rm -f $(ODIR)/pso_mt
+	rm -f $(ODIR)/example
 	rm -f $(ODIR)/*.o

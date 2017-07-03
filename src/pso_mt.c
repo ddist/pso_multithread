@@ -20,6 +20,8 @@ void create_pso(ftsp_instance_t inst, pso_params_t params, pso_t* pso) {
 		(*pso)->cij[i] = calloc(inst->N, sizeof(double));
 		if(!(*pso)->cij[i]) throw_error(EXIT_FAILURE, MEMALLOC_ERROR);
 	}
+
+	pthread_mutex_init(&(*pso)->global_mutex, NULL);
 }
 
 void initialize_pso(pso_t pso) {
@@ -197,35 +199,46 @@ void decode(pso_particle_t p, pso_route_t *routes, double *zk, pso_t pso) {
 	free(cov);
 }
 
+void compute_frame(pso_frame_p arg) {
+	pso_route_t routes[arg->pso->inst->m];
+	for(int k=0; k < arg->pso->inst->m;k++) 
+		create_route(&routes[k]);
+	double *zk = calloc(arg->pso->inst->m, sizeof(double));
+	if(!zk) throw_error(EXIT_FAILURE, MEMALLOC_ERROR);
+
+	decode(arg->pso->swarm[arg->j], routes, zk, arg->pso);
+	double score = evaluate_routes(arg->pso->inst, routes, zk);
+	
+	if(arg->pso->swarm[arg->j]->best_score < score) {
+		arg->pso->swarm[arg->j]->best_score = score;
+		memcpy(arg->pso->swarm[arg->j]->best_u, arg->pso->swarm[arg->j]->u, arg->pso->swarm[arg->j]->size * sizeof(double));
+		pthread_mutex_lock(&(arg->pso->global_mutex));
+		if(arg->pso->best_score < score) {
+			arg->pso->best_score = score;
+			memcpy(arg->pso->best_u, arg->pso->swarm[arg->j]->u, arg->pso->swarm[arg->j]->size * sizeof(double));
+		}
+		pthread_mutex_unlock(&(arg->pso->global_mutex));
+	}
+
+	update_particle_velocity(arg->pso->swarm[arg->j], arg->i, arg->pso);
+	update_particle_position(arg->pso->swarm[arg->j], arg->pso);
+
+	for(int k=0; k < arg->pso->inst->m;k++)
+		destroy_route(routes[k]);
+	free(zk);
+}
+
 double start(pso_t pso) {
+	thread_pool_p t_pool;
+	if(create_thread_pool(pso->params->thread_count, &t_pool)) throw_error(EXIT_FAILURE, MEMALLOC_ERROR);
 	for(int i=0;i < pso->params->max_iter;i++) {
 		for(int j=0; j < pso->params->I; j++) {
-			pso_route_t routes[pso->inst->m];
-			for(int k=0; k < pso->inst->m;k++) 
-				create_route(&routes[k]);
-			double *zk = calloc(pso->inst->m, sizeof(double));
-			if(!zk) throw_error(EXIT_FAILURE, MEMALLOC_ERROR);
-
-			decode(pso->swarm[j], routes, zk, pso);
-			double score = evaluate_routes(pso->inst, routes, zk);
-			
-			if(pso->swarm[j]->best_score < score) {
-				pso->swarm[j]->best_score = score;
-				memcpy(pso->swarm[j]->best_u, pso->swarm[j]->u, pso->swarm[j]->size * sizeof(double));
-
-				if(pso->best_score < score) {
-					pso->best_score = score;
-					memcpy(pso->best_u, pso->swarm[j]->u, pso->swarm[j]->size * sizeof(double));
-				}
-			}
-
-			update_particle_velocity(pso->swarm[j], i, pso);
-			update_particle_position(pso->swarm[j], pso);
-
-			for(int k=0; k < pso->inst->m;k++)
-				destroy_route(routes[k]);
-			free(zk);
+			pso_frame_p frame = malloc(sizeof(pso_frame_t));
+			if(!frame) throw_error(EXIT_FAILURE, MEMALLOC_ERROR);
+			frame->i = i; frame->j = j; frame->pso = pso;
+			add_job_to_thread_pool((void*)compute_frame, frame, FREE_ARG, t_pool);
 		}
+		thread_pool_wait(t_pool);
 	}
 	return pso->best_score;
 }
