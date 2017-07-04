@@ -7,6 +7,12 @@ void throw_error(int err_code, const char* err_msg) {
 	exit(err_code);
 }
 
+int mod(int a, int b)
+{
+    int r = a % b;
+    return r < 0 ? r + b : r;
+}
+
 double norm(double x1, double x2, double y1, double y2) {
 	return sqrt( pow(x1 - y1, 2) + pow(x2 - y2, 2));
 }
@@ -77,6 +83,7 @@ void initialize_particle(int i, double u_max, double u_min, double v_max, double
 		p->v[i] = rand_uniform(v_min, v_max);
 		p->best_u[i] = p->u[i];
 	}
+	pthread_mutex_init(&(p->particle_mutex), NULL);
 }
 
 void destroy_particle(pso_particle_t p) {

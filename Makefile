@@ -14,7 +14,7 @@ $(ODIR)/%.o: $(SDIR)/%.c
 	$(CC) -c -g $(INC) -o $@ $< $(CFLAGS)
 
 pso: $(OBJS) 
-	$(CC) -o pso $^ -lm
+	$(CC) -o pso $^ -lm -pthread
 
 pso_mt: $(OBJS_MT)
 	$(CC) -o pso_mt $^ -g -lm -pthread -DMULTITHREADING

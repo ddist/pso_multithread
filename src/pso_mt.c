@@ -63,30 +63,34 @@ double evaluate_routes(ftsp_instance_t inst, pso_route_t* routes, double *zk) {
 
 void update_particle_velocity(pso_particle_t p, unsigned int i, pso_t pso) {
 	double *ring_best = p->u, *fdr_best = p->u, score = p->best_score;
-
-	if(pso->swarm[(p->id-1)%pso->params->I]->best_score > score) {
-		score = pso->swarm[(p->id-1)%pso->params->I]->best_score;
+	unsigned int ring_best_i = p->id, fdr_best_i = p->id;
+	if(pso->swarm[mod(p->id-1, pso->params->I)]->best_score > score) {
+		score = pso->swarm[mod(p->id-1, pso->params->I)]->best_score;
 		ring_best = pso->swarm[(p->id-1)%pso->params->I]->u;
+		ring_best_i = mod(p->id-1, pso->params->I);
 	}
-	if(pso->swarm[(p->id+1)%pso->params->I]->best_score > score) {
-		score = pso->swarm[(p->id+1)%pso->params->I]->best_score;
-		ring_best = pso->swarm[(p->id+1)%pso->params->I]->u;
+	if(pso->swarm[mod(p->id+1, pso->params->I)]->best_score > score) {
+		score = pso->swarm[mod(p->id+1, pso->params->I)]->best_score;
+		ring_best = pso->swarm[mod(p->id+1, pso->params->I)]->u;
+		ring_best_i = mod(p->id+1, pso->params->I);
 	}
-
 	double fdr, best_fdr = MIN_FDR;
 
-	for(int i=0; i < pso->params->I; i++){
-		if(p->id == i) continue;
-		double distance = compute_distance(pso->swarm[i]->u, p->u, p->size);
-		fdr = (pso->swarm[i]->best_score - p->best_score)/distance;
+	for(int k=0; k < pso->params->I; k++){
+		if(p->id == k) continue;
+		double distance = compute_distance(pso->swarm[k]->u, p->u, p->size);
+		fdr = (pso->swarm[k]->best_score - p->best_score)/distance;
 		if(fdr > best_fdr) {
 			best_fdr = fdr;
-			fdr_best = pso->swarm[i]->u;
+			fdr_best = pso->swarm[k]->u;
+			fdr_best_i = k;
 		}
 	}
 
 	double w = pso->params->w_max - i*(pso->params->w_max - pso->params->w_min)/pso->params->max_iter;
-
+ 	pthread_mutex_lock(&(pso->global_mutex));
+ 	pthread_mutex_lock(&(pso->swarm[ring_best_i]->particle_mutex));
+ 	if(ring_best_i != fdr_best_i) pthread_mutex_lock(&(pso->swarm[fdr_best_i]->particle_mutex));
 	for(int i=0; i < p->size; i++) {
 		p->v[i] = p->v[i]*w + pso->params->cp*rand_uniform(0.0, 1.0)*(p->best_u[i] - p->u[i]);
 		p->v[i] +=  pso->params->cg*rand_uniform(0.0, 1.0)*(pso->best_u[i] - p->u[i]);
@@ -95,6 +99,9 @@ void update_particle_velocity(pso_particle_t p, unsigned int i, pso_t pso) {
 		if(p->v[i] > pso->params->v_max) p->v[i] = pso->params->v_max;
 		if(p->v[i] < pso->params->v_min) p->v[i] = pso->params->v_min;
 	}
+ 	if(ring_best_i != fdr_best_i) pthread_mutex_unlock(&(pso->swarm[fdr_best_i]->particle_mutex));
+ 	pthread_mutex_unlock(&(pso->swarm[ring_best_i]->particle_mutex));
+ 	pthread_mutex_unlock(&(pso->global_mutex));
 }
 
 void update_particle_position(pso_particle_t p, pso_t pso) {
@@ -208,7 +215,6 @@ void compute_frame(pso_frame_p arg) {
 
 	decode(arg->pso->swarm[arg->j], routes, zk, arg->pso);
 	double score = evaluate_routes(arg->pso->inst, routes, zk);
-	
 	if(arg->pso->swarm[arg->j]->best_score < score) {
 		arg->pso->swarm[arg->j]->best_score = score;
 		memcpy(arg->pso->swarm[arg->j]->best_u, arg->pso->swarm[arg->j]->u, arg->pso->swarm[arg->j]->size * sizeof(double));
@@ -219,7 +225,6 @@ void compute_frame(pso_frame_p arg) {
 		}
 		pthread_mutex_unlock(&(arg->pso->global_mutex));
 	}
-
 	update_particle_velocity(arg->pso->swarm[arg->j], arg->i, arg->pso);
 	update_particle_position(arg->pso->swarm[arg->j], arg->pso);
 

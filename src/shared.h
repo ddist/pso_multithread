@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <pthread.h>
 
 /******************************* Misc ***************************************/
 
@@ -16,6 +17,8 @@ typedef int bool;
 #define MEMALLOC_ERROR "Memory allocation did not succeded"
 
 void throw_error(int, const char*);
+
+int mod(int, int);
 
 double norm(double, double, double, double);
 
@@ -54,6 +57,7 @@ typedef struct {
 	double *best_u;
 	double best_score;
 	size_t id, size;
+	pthread_mutex_t particle_mutex;
 } pso_particle;
 typedef pso_particle* pso_particle_t;
 
